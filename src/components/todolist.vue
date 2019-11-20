@@ -7,7 +7,10 @@
     </div>
     <br/>
     <div>
-      搜索名称：<input v-model="searchName" type="text" @keyup="searchNamef()"/>
+      搜索名称：<input v-model="searchName" type="text" />
+      <div v-for="(p,index) in searchf" :key="iii">
+        {{p.name}}
+      </div>
     </div>
   </div>
 </template>
@@ -27,9 +30,12 @@
             },
             deleteName($event) {
                 this.list.splice($event.index,1)
-            },
-            searchNamef($event) {
-                this.list.filter(p=> p.name.indexOf(p) !== -1)
+            }
+        },computed: {
+            searchf() {
+                const {list,searchName} = this
+                let filterList = list.filter(p=> p.name.indexOf(searchName) !== -1)
+                return filterList
             }
         }
     }
