@@ -5,6 +5,10 @@
     <div v-for="(p,index) in list" :key="index">
       {{index}} -- {{p.name}} <button @click="deleteName">del</button>
     </div>
+    <br/>
+    <div>
+      搜索名称：<input v-model="searchName" type="text" @keyup="searchNamef()"/>
+    </div>
   </div>
 </template>
 
@@ -14,6 +18,7 @@
         data() {
             return {
                 addName:'',
+                searchName:'',
                 list:[{name: 'fg'},{name:'sfx'}]
             }
         },methods: {
@@ -22,6 +27,9 @@
             },
             deleteName($event) {
                 this.list.splice($event.index,1)
+            },
+            searchNamef($event) {
+                this.list.filter(p=> p.name.indexOf(p) !== -1)
             }
         }
     }
