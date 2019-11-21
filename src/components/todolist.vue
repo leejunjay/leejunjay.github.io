@@ -5,8 +5,8 @@
     <div v-for="(p,index) in list" :key="index">
       <input type="text" :disabled='p.disabled' v-model="p.name"/>
       <button @click="deleteName">del</button>
-      <button v-if="!p.defaultOk" @click="updatef(p)">更改姓名</button>
-      <button v-if="!p.isOk" @click="updateOk(p)">确认</button>
+      <button v-if="defaultOk" @click="updatef(p)">更改姓名</button>
+      <button v-if="isOk" @click="updateOk(p)">确认</button>
     </div>
     <br/>
     <br/>
@@ -30,10 +30,10 @@
             return {
                 addName:'',
                 searchName:'',
+                defaultOk:true,
+                isOk:false,
                 disabled:true,
-                defaultOk:false,
-                isOk:true,
-                list:[{name: 'fg',disabled:true,defaultOk:false,isOk:true},{name:'sfx',disabled: true,defaultOk:false,isOk:true}]
+                list:[{name: 'fg',disabled:true},{name:'sfx',disabled: true}]
             }
         },methods: {
             submitData() {
@@ -42,7 +42,7 @@
                     if(chroess) {
                         alert('不能添加重复值')
                     } else {
-                        list.push({name:this.addName,disabled:this.disabled,defaultOk:this.defaultOk,isOk:this.isOk})
+                        list.push({name:this.addName})
                     }
             },
             deleteName($event) {
@@ -50,14 +50,14 @@
             },
             updatef(p) {
                 p.disabled = false
-                p.defaultOk = true
-                p.isOk = false
+                this.defaultOk = false
+                this.isOk = true
             },
             updateOk(p) {
                 let chroess = confirm('确认修改为：'+p.name+" 吗？")
                 if(chroess == true) {
-                    p.isOk = true
-                    p.defaultOk = false
+                    this.isOk = false
+                    this.defaultOk = true
                     p.disabled = true
                 }
             }
