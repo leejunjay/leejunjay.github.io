@@ -3,17 +3,22 @@
     <input type="text" placeholder="请输入需要添加的姓名" v-model="addName" />
     <button @click="submitData">add</button>
     <div v-for="(p,index) in list" :key="index">
-      {{index}} -- {{p.name}} <button @click="deleteName">del</button>
+      <input type="text" :disabled='p.disabled' v-model="p.name"/>
+      <button @click="deleteName">del</button>
+      <button v-if="!p.defaultOk" @click="updatef(p)">更改姓名</button>
+      <button v-if="!p.isOk" @click="updateOk(p)">确认</button>
     </div>
     <br/>
+    <br/>
     <div>
-      搜索名称：<input v-model="searchName" type="text" />
+      <label>搜索名称：</label><input v-model="searchName" type="text" />
       <div v-for="(p,index) in searchf" :key="index">
         {{p.name}}
       </div>
-      编辑姓名：<input type="text" ref="add" disabled='disabled' v-model="updateName"/>
-      <button v-if="defaultOk" @click="updatef">更改姓名</button>
-      <button v-if="isOk" @click="updateOk">确认</button>
+      <br/>
+      <br/>
+      <div>
+      </div>
     </div>
   </div>
 </template>
@@ -25,10 +30,10 @@
             return {
                 addName:'',
                 searchName:'',
-                updateName:'哈哈哈',
-                defaultOk:true,
-                isOk:false,
-                list:[{name: 'fg'},{name:'sfx'}]
+                disabled:true,
+                defaultOk:false,
+                isOk:true,
+                list:[{name: 'fg',disabled:true,defaultOk:false,isOk:true},{name:'sfx',disabled: true,defaultOk:false,isOk:true}]
             }
         },methods: {
             submitData() {
@@ -37,30 +42,23 @@
                     if(chroess) {
                         alert('不能添加重复值')
                     } else {
-                        list.push({name:this.addName})
+                        list.push({name:this.addName,disabled:this.disabled,defaultOk:this.defaultOk,isOk:this.isOk})
                     }
-            },
-            unique(arr) {
-                const res = new Map()
-                return arr.filter((arr) => !res.has(arr.name))
             },
             deleteName($event) {
                 this.list.splice($event.index,1)
             },
-            updatef() {
-                this.$refs.add.removeAttribute('disabled')
-                this.defaultOk = false
-                this.isOk = true
-
+            updatef(p) {
+                p.disabled = false
+                p.defaultOk = true
+                p.isOk = false
             },
-            updateOk() {
-                let chroess = confirm('确认修改为：'+ this.updateName+" 吗？")
+            updateOk(p) {
+                let chroess = confirm('确认修改为：'+p.name+" 吗？")
                 if(chroess == true) {
-                    this.isOk = false
-                    this.defaultOk = true
-                    this.$refs.add.setAttribute('disabled','disabled')
-                } else {
-
+                    p.isOk = true
+                    p.defaultOk = false
+                    p.disabled = true
                 }
             }
         },computed: {
