@@ -5,7 +5,7 @@
     <div v-for="(p,index) in list" :key="index">
       <input type="text" :disabled='p.disabled' v-model="p.name"/>
       <button @click="deleteName">del</button>
-      <button v-if="p.defaultOk" @click="updatef(p)">更改姓名</button>
+      <button v-if="p.disabled" @click="p.disabled = !p.disabled">更改姓名</button>
       <button v-else @click="updateOk(p)">确认</button>
     </div>
     <br/>
@@ -34,12 +34,13 @@
                 isOk: false,
                 disabled: true,
                 isShow: true,
-                list: [{name: 'fg', disabled: true, defaultOk: true}, {name: 'sfx', disabled: true, defaultOk: true}]
+                list: [{name: 'fg', disabled: true}, {name: 'sfx', disabled: true}]
             }
-        }, methods: {
+        },
+        methods: {
             submitData() {
                 const {list, addName} = this
-                let chroess = list.find((p) => p.name.trim() == addName.trim())
+                let chroess = list.find((p) => p.name == addName)
                 if (chroess) {
                     alert('不能添加重复值')
                 } else {
@@ -49,14 +50,9 @@
             deleteName($event) {
                 this.list.splice($event.index, 1)
             },
-            updatef(p) {
-                p.disabled = false
-                p.defaultOk = false
-            },
             updateOk(p) {
                 let chroess = confirm('确认修改为：' + p.name + " 吗？")
                 if (chroess == true) {
-                    p.defaultOk = true
                     p.disabled = true
                 }
             }
