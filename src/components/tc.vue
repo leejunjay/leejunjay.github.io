@@ -1,7 +1,6 @@
 <template>
   <div>
-    <button @click="showTC()">弹窗</button>
-    <div :class="{show:isShow}">
+    <div :class="{show:isShow||isHide}">
       <div class="box">
         <div class="small-box">
           <div class="header overflow-h">
@@ -9,7 +8,7 @@
               师傅弹窗这里我尽力了的
             </div>
             <div class="header-close">
-              <button class="closeBtn" @click="showTC()">
+              <button class="closeBtn" @click="hideTC">
                 关闭
               </button>
             </div>
@@ -23,14 +22,20 @@
 <script>
     export default {
         name: "tc",
+        props:['isShow'],
         data() {
             return {
-                isShow: true
+                isHide: false
             }
         },
         methods: {
-            showTC() {
-                this.isShow = !this.isShow
+            hideTC() {
+                this.isHide = 'false'
+            }
+        },
+        watch: {
+            isShow: function (value) {
+              console.log(value)
             }
         }
     }

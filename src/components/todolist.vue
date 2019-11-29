@@ -17,7 +17,8 @@
       </div>
       <br/>
       <br/>
-      <Tc/>
+      <button @click="showTC()">弹窗</button>
+      <Tc :isShow="isShow"/>
     </div>
   </div>
 </template>
@@ -55,6 +56,9 @@
                 if (chroess == true) {
                     p.disabled = true
                 }
+            },
+            showTC() {
+                this.isShow = false
             }
         }, computed: {
             searchf() {
