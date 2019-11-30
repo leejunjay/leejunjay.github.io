@@ -18,7 +18,7 @@
       <br/>
       <br/>
       <button @click="showTC()">弹窗</button>
-      <Tc :isShow="isShow"/>
+      <Tc :isShow="isShow" @showTC="showTC(isShow)"/>
     </div>
   </div>
 </template>
@@ -41,7 +41,7 @@
         methods: {
             submitData() {
                 const {list, addName} = this
-                let chroess = list.find((p) => p.name == addName)
+                let chroess = list.find((p) => p.name === addName)
                 if (chroess) {
                     alert('不能添加重复值')
                 } else {
@@ -53,12 +53,17 @@
             },
             updateOk(p) {
                 let chroess = confirm('确认修改为：' + p.name + " 吗？")
-                if (chroess == true) {
+                if (chroess === true) {
                     p.disabled = true
                 }
             },
-            showTC() {
-                this.isShow = false
+            showTC(isShow) {
+                console.log(isShow)
+                if(isShow !== false) {
+                    this.isShow = false
+                } else {
+                    this.isShow = true
+                }
             }
         }, computed: {
             searchf() {

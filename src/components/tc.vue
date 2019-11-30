@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div :class="{show:isShow||isHide}">
+    <div :class="{show:isShow}">
       <div class="box">
         <div class="small-box">
           <div class="header overflow-h">
@@ -25,17 +25,12 @@
         props:['isShow'],
         data() {
             return {
-                isHide: false
             }
         },
         methods: {
             hideTC() {
-                this.isHide = 'false'
-            }
-        },
-        watch: {
-            isShow: function (value) {
-              console.log(value)
+                this.$emit('showTC',false)
+                console.log('emit')
             }
         }
     }
