@@ -20,6 +20,13 @@
       <button @click="showTC()">弹窗</button>
       <Tc :isShow="isShow" @showTC="showTC(isShow)"/>
     </div>
+    <div>
+      <table>
+        <tr v-for="(p,index) in list" :key="index">
+          <td :class="p.disabled ? 'defaultColor' : 'active'" @click="ColorF(p)">{{p.name}}</td>
+        </tr>
+      </table>
+    </div>
   </div>
 </template>
 
@@ -58,12 +65,14 @@
                 }
             },
             showTC(isShow) {
-                console.log(isShow)
                 if(isShow !== false) {
                     this.isShow = false
                 } else {
                     this.isShow = true
                 }
+            },
+            ColorF(p) {
+                p.disabled = !p.disabled
             }
         }, computed: {
             searchf() {
@@ -78,5 +87,11 @@
 <style scoped>
   input:focus,button:focus {
     outline: none;
+  }
+  .defaultColor {
+    border: 2px solid #ccc;
+  }
+  .active {
+    border:2px solid deeppink;
   }
 </style>

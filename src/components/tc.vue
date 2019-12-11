@@ -30,7 +30,6 @@
         methods: {
             hideTC() {
                 this.$emit('showTC',false)
-                console.log('emit')
             }
         }
     }
