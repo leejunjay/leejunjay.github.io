@@ -22,8 +22,8 @@
     </div>
     <div>
       <table>
-        <tr v-for="(p,index) in list" :key="index">
-          <td :class="p.disabled ? 'defaultColor' : 'active'" @click="ColorF(p)">{{p.name}}</td>
+        <tr v-for="(item,idx) of list" :key="idx">
+          <td :class="idx==isActive ? 'active' : 'defaultColor'" @click="ColorF(item,idx,$event)">{{item.name}}</td>
         </tr>
       </table>
     </div>
@@ -42,6 +42,7 @@
                 isOk: false,
                 disabled: true,
                 isShow: true,
+                isActive:-1,
                 list: [{name: 'fg', disabled: true}, {name: 'sfx', disabled: true}]
             }
         },
@@ -71,8 +72,14 @@
                     this.isShow = true
                 }
             },
-            ColorF(p) {
-                p.disabled = !p.disabled
+            ColorF(item,index,$event) {
+                this.isActive = index
+                debugger;
+                let hhh = $event.currentTarget.getAttributeNode('class')
+                console.log(hhh)
+                if(hhh.nodeValue == 'active') {
+                    hhh.nodeValue = 'defaultColor'
+                }
             }
         }, computed: {
             searchf() {
