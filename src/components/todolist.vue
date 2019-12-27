@@ -4,7 +4,7 @@
     <button @click="submitData">add</button>
     <div v-for="(p,index) in list" :key="index">
       <input type="text" :disabled='p.disabled' v-model="p.name"/>
-      <button @click="deleteName">del</button>
+      <button @click="deleteName(index)">del</button>
       <button v-if="p.disabled" @click="p.disabled = !p.disabled">更改姓名</button>
       <button v-else @click="updateOk(p)">确认</button>
     </div>
@@ -23,7 +23,9 @@
     <div>
       <table>
         <tr v-for="(item,idx) of list" :key="idx">
-          <td :class="idx==isActive ? 'active' : 'defaultColor'" @click="ColorF(item,idx,$event)">{{item.name}}</td>
+          <td :class="[{active: checkList.indexOf(idx) > -1},'defaultColor']"
+              @click="ColorF(idx)">{{item.name}}
+          </td>
         </tr>
       </table>
     </div>
@@ -32,6 +34,7 @@
 
 <script>
     import Tc from './tc'
+
     export default {
         components: {Tc},
         data() {
@@ -42,8 +45,8 @@
                 isOk: false,
                 disabled: true,
                 isShow: true,
-                isActive:-1,
-                list: [{name: 'fg', disabled: true}, {name: 'sfx', disabled: true}]
+                list: [{name: 'fg', disabled: true}, {name: 'sfx', disabled: true}],
+                checkList: []
             }
         },
         methods: {
@@ -56,8 +59,8 @@
                     list.push({name: this.addName})
                 }
             },
-            deleteName($event) {
-                this.list.splice($event.index, 1)
+            deleteName(index) {
+                this.list.splice(index, 1)
             },
             updateOk(p) {
                 let chroess = confirm('确认修改为：' + p.name + " 吗？")
@@ -66,20 +69,22 @@
                 }
             },
             showTC(isShow) {
-                if(isShow !== false) {
+                if (isShow !== false) {
                     this.isShow = false
                 } else {
                     this.isShow = true
                 }
             },
-            ColorF(item,index,$event) {
-                this.isActive = index
-                debugger;
-                let hhh = $event.currentTarget.getAttributeNode('class')
-                console.log(hhh)
-                if(hhh.nodeValue == 'active') {
-                    hhh.nodeValue = 'defaultColor'
-                }
+            ColorF(idx) {
+                    if (this.checkList.indexOf(idx) === -1) {
+                        this.checkList.push(idx);
+                    } else {
+                        let spliceIndex = this.checkList.indexOf(idx);
+                        this.checkList.splice(spliceIndex, 1);
+                    }
+                    if(this.checkList.length === 2) {
+                        this.checkList.splice(0,1)
+                    }
             }
         }, computed: {
             searchf() {
@@ -92,13 +97,15 @@
 </script>
 
 <style scoped>
-  input:focus,button:focus {
+  input:focus, button:focus {
     outline: none;
   }
+
   .defaultColor {
     border: 2px solid #ccc;
   }
+
   .active {
-    border:2px solid deeppink;
+    border: 2px solid deeppink;
   }
 </style>
