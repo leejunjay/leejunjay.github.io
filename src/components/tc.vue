@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div :class="{show:isShow}">
+    <div :class="{showTc:isShow}">
       <div class="box">
         <div class="small-box">
           <div class="header overflow-h">
@@ -44,7 +44,7 @@
     cursor: pointer;
   }
 
-  .show {
+  .showTc {
     display: none;
   }
 

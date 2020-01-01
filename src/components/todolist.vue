@@ -23,7 +23,7 @@
     <div>
       <table>
         <tr v-for="(item,idx) of list" :key="idx">
-          <td :class="[{active: checkList.indexOf(idx) > -1},'defaultColor']"
+          <td :class="[{active: isActive===idx},'defaultColor']"
               @click="ColorF(idx)">{{item.name}}
           </td>
         </tr>
@@ -46,7 +46,9 @@
                 disabled: true,
                 isShow: true,
                 list: [{name: 'fg', disabled: true}, {name: 'sfx', disabled: true}],
-                checkList: []
+                checkList: [],
+                isActive: false,
+                commit : -1
             }
         },
         methods: {
@@ -76,7 +78,7 @@
                 }
             },
             ColorF(idx) {
-                    if (this.checkList.indexOf(idx) === -1) {
+                    /*if (this.checkList.indexOf(idx) === -1) {
                         this.checkList.push(idx);
                     } else {
                         let spliceIndex = this.checkList.indexOf(idx);
@@ -84,7 +86,15 @@
                     }
                     if(this.checkList.length === 2) {
                         this.checkList.splice(0,1)
-                    }
+                    }*/
+                /*1.删除所有样式
+                2.添加当前点击的样式*/
+                if(this.commit === idx) {
+                    this.isActive = false
+                } else {
+                    this.isActive = idx
+                    this.commit = idx
+                }
             }
         }, computed: {
             searchf() {
